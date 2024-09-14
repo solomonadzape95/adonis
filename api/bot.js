@@ -36,8 +36,9 @@ bot.command("start", async (ctx) => {
   });
   const devRep = `Hey Mom, ${first_name} started a chat with me today😁.
   `;
-  await bot.api.sendMessage(devID, devRep);
-  users.push({ first_name, id });
+  if (id !== devID) {
+    await bot.api.sendMessage(devID, devRep);
+  }
 });
 bot.command("home", async (ctx) => {
   await ctx.reply("Going Home...", { reply_markup: keyboard });
