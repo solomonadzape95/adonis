@@ -12,6 +12,7 @@
     "typescript": "^5.6.2"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.19.0",
     "fs": "^0.0.1-security",
     "grammy": "^1.30.0"
   }

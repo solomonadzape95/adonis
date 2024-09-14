@@ -11,10 +11,44 @@ Here's how I can help you
   🗣️ Feedback - Send your feedback to the development team
   🆘 Help - See this help message again.
 
+  Other Commands:
+  /home - to go to the main menu
+  /help - to see this help message again
 You can also ask me anything about Base or blockchain technology, and I'll do my best to help!
 
 What would you like to know more about?
     `,
+    dapp: `Exploring dApps on Base 🚀
+What are dApps? 🤔
+dApps stand for decentralized applications. They have the following features:
+▪️ They are software applications running on a blockchain
+▪️ They have no central authority and are user-controlled
+▪️ They are open-source and transparent
+
+Popular dApps on Base:
+
+[Aerodrome 🛩️](http://aerodrome.finance/)
+• Decentralized exchange (DEX)
+• Swap tokens, provide liquidity
+[Baseswap 💱](https://baseswap.fi/)
+• Another popular DEX on Base
+• Features yield farming
+[Mint Fun 🎨](https://mint.fun/feed/trending)
+• NFT launchpad and marketplace
+• Discover and create new NFT projects
+
+You can find comprehensive lists of dApps on Base at:
+▪️ [Base Website](https://www.base.org/ecosystem)🟦
+▪️ [Maester](https://maester.xyz)🟪
+
+How to Use dApps🤔:
+
+▪️ Connect your Base-compatible wallet
+▪️ Ensure you have some ETH for gas fees
+▪️ Interact with the dApp's interface
+▪️ Always review transactions before confirming
+
+Have fun exploring the Base Ecosystem😁!!`,
     rounds: `🕶️ Rounds.wtf: Funding Cycles on Base 🔄
 Rounds is a platform for recurring funding sessions or 'rounds' as they are called
 ⚡ Quick Start:
@@ -43,6 +77,34 @@ Crazy right?😁
 ▪️ Start engaging (cast, follow, like, comment)
 You can ask me any more questions you have about Farcaster, I'll be more than happy to help😁
 `,
+    faucet: `Getting Testnet Tokens on Base 💧
+Need tokens to experiment on Base Sepolia testnet? Here's how to use the faucet:
+What's a Faucet? 🚰
+
+It;s a service that distributes free testnet tokens
+Used for testing and development purposes
+N.B The tokens have no real value
+
+Steps to Get Testnet Tokens 🪜:
+
+Prepare Your Wallet 💳:
+• Ensure your wallet is set up for Base Goerli testnet
+• Have your wallet address ready
+Visit the Faucet 🚗:
+• Go to: https://faucet.quicknode.com/ethereum/goerli
+• Select "Base Sepolia" from the network options
+Request Tokens 🫴:
+• Enter your wallet address
+• Complete the CAPTCHA (if required)
+• Click "Request Tokens"
+Confirm Receipt 📃:
+• Check your wallet for the received tokens
+• This usually takes a few seconds
+
+Remember:
+
+Testnet tokens are for testing only
+Don't use real assets on testnets`,
     earn: `Earning Opportunities on Base 💰
 Did you know you stand a chance to earn on Base, Yeah I know, it keeps getting better😁
 Base has an initiative called the Universal Builder Income (UBI) 🏗️, where you can earn rewards for building on and contributing to the Base ecosystem
@@ -55,8 +117,8 @@ Now there are some services that'll help you earn: Rounds and Farcaster.
 Use the keyboard below to learn more about them🙂
 `,
     faq: `Have some questions ${first_name} ?
-    Which of these do you need answers to?
-    P.S if you can't find your question below, you can type it out so I can answer it`,
+Which of these do you need answers to?
+P.S if you can't find your question below, you can type it out and I'd be happy to answer it😁`,
     start: `🚀 Welcome, ${first_name}!🚀
 I'm Basik your Base Onboarding Assistant.
 Let's get you onchain!
@@ -135,17 +197,50 @@ Save the network settings
 Your wallet is now set up and connected to Base!`,
     walletSec: `Security Tips for Your Wallet 🔒
 
-Never share your recovery phrase or private keys with anyone
-Use a strong, unique password for your wallet
-Enable two-factor authentication (2FA) if available
-Be cautious of phishing attempts - always double-check URLs
-Consider using a hardware wallet for large amounts
-Regularly update your wallet software
-Be wary of unexpected transactions - always verify before approving
+• Never share your recovery phrase or private keys with anyone
+• Use a strong, unique password for your wallet
+• Enable two-factor authentication (2FA) if available
+• Be cautious of phishing attempts - always double-check URLs
+• Consider using a hardware wallet for large amounts
+• Regularly update your wallet software
+• Be wary of unexpected transactions - always verify before approving
 
 Remember, your wallet's security is in your hands. Stay vigilant!`,
     feedback: `Are there any cool features you'd want me to have? Or you just want to commend my developers?😁
 Start a message with '/review', give a space and type out your message`,
+    q4: `Q: What makes Base better than other Ethereum L2s?
+
+A: Base stands out with:
+Coinbase backing: Strong support and integration
+EVM equivalence: Easy Ethereum compatibility
+Open-source: Transparent and community-driven
+Low fees and fast transactions
+Growing ecosystem of dApps and users
+`,
+    q1: `Q: I am a complete newbie, I know nothing😫
+
+A: No worries! Here's a quick start:
+
+• Get a grasp of what blockchains are and how they work
+• Look at some popular blockchains like Ethereum and Solana
+• Explore Base and Base dApps
+•  Join The Base community on Discord or Twitter
+
+Heres a youtube video that can help [What is a blockchain](https://youtu.be/2m0azblg-To?si=75pfmMGDfDX7Qvgx)`,
+    q3: `Q: What's the difference between Farcaster and Warpcast?🤷
+
+A: Farcaster is the decentralized social protocol, while Warpcast is a popular client app for accessing the Farcaster network. Think of Farcaster as the underlying system and Warpcast as one way to interact with it.`,
+    q2: `Q: I'm a developer 🧑‍💻, How do i build on Base?🤔
+
+A: To start building on Base:
+
+Set up your dev environment
+Use Ethereum tools (Solidity, Hardhat, etc.)
+Connect to Base testnet
+Deploy and test your contracts
+Use Base's documentation and SDKs
+
+Check out https://docs.base.org for comprehensive dev guides!`,
     community: `
 🌟 *Join Our Amazing Base Community, ${first_name}!* 🌟
 
@@ -155,7 +250,7 @@ Connect with fellow enthusiasts and get support:
    Follow our Base community for updates, insights, and news.
    Join the scaling revolution!
 
-🔹 [Whatsapp](https://chat.whatsapp.com/BTuM7DtNZiIHmwf2T5txc8)
+🔹 [Whatsapp](https://tinyurl.com/25r32b6v)
    Join Base enthusiasts on WhatsApp!
    Connect and Discuss all things Base!!.
 

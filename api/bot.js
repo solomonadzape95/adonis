@@ -1,8 +1,13 @@
-import { Bot, InputFile, webhookCallback } from "grammy";
+import { Bot, webhookCallback } from "grammy";
 import { returnMsgs } from "../assets/messages";
 import { users } from "../assets/users";
-import { earnKeyboard, keyboard, walletKeyboard } from "../assets/keyboards";
-// import { createReadStream } from "fs";
+import {
+  earnKeyboard,
+  faqKeyboard,
+  keyboard,
+  walletKeyboard,
+} from "../assets/keyboards";
+import { getGeminiResponse } from "../assets/gemini";
 export const config = {
   runtime: "edge",
 };
@@ -34,99 +39,110 @@ bot.command("start", async (ctx) => {
   await bot.api.sendMessage(devID, devRep);
   users.push({ first_name, id });
 });
-bot.hears("💳 Set Up Wallet", async (ctx) => {
+bot.on("message:text", async (ctx) => {
   const { first_name, id } = ctx.from;
+  let text = "";
+  let msg, kb;
+  switch (ctx.msg.text) {
+    case "💳 Set Up Wallet":
+      text = "/wallet";
+      msg = returnMsgs(first_name).wallet;
+      kb = walletKeyboard;
+      break;
+    case "➕ Installation":
+      text = "/installwallet";
+      msg = returnMsgs(first_name).walletInstall;
+      kb = walletKeyboard;
+      break;
+    case "🔗 Set Up Wallet":
+      text = "/setupwallet";
+      msg = returnMsgs(first_name).walletSetUp;
+      kb = walletKeyboard;
+      break;
+    case "🔐 Wallet Security":
+      text = "/walletsecurity";
+      msg = returnMsgs(first_name).walletSec;
+      kb = walletKeyboard;
+      break;
+    case "🚀 Getting Started":
+      text = "/overview";
+      msg = returnMsgs(first_name).overview;
+      kb = keyboard;
+      break;
+    case "🌐 Community":
+      text = "/community";
+      msg = returnMsgs(first_name).community;
+      break;
+    case "🗣️ Feedback":
+      text = "/feedback";
+      msg = returnMsgs(first_name).feedback;
+      break;
+    case "💵 Earn":
+      text = "/earn";
+      msg = returnMsgs(first_name).earn;
+      kb = earnKeyboard;
+      break;
+    case "🏛️ Farcaster":
+      text = "/warpcast";
+      msg = returnMsgs(first_name).warpcast;
+      kb = earnKeyboard;
+      break;
+    case "🕶️ Rounds":
+      text = "/rounds";
+      msg = returnMsgs(first_name).rounds;
+      kb = earnKeyboard;
+      break;
+    case "❓ FAQ":
+      text = "/faq";
+      msg = returnMsgs(first_name).faq;
+      kb = faqKeyboard;
+      break;
+    case "I'm a developer 🧑‍💻, How do i build on Base?🤔":
+      text = "/faq";
+      msg = returnMsgs(first_name).q2;
+      kb = faqKeyboard;
+      break;
+    case "I am a complete newbie, I know nothing😫":
+      text = "/faq";
+      msg = returnMsgs(first_name).q1;
+      kb = faqKeyboard;
+      break;
+    case "What makes Base better than other Ethereum L2s?🤔":
+      text = "/faq";
+      msg = returnMsgs(first_name).q4;
+      kb = faqKeyboard;
+      break;
+    case "Whats the difference between Farcaster and Warpcast?🤷":
+      text = "/faq";
+      msg = returnMsgs(first_name).q3;
+      kb = faqKeyboard;
+      break;
+    case "🖥️ Dapps":
+      text = "/dapps";
+      msg = returnMsgs(first_name).dapp;
+      break;
+    case "🚿 Faucet Guide":
+      text = "/faucet";
+      msg = returnMsgs(first_name).faucet;
+      break;
+    case "🆘 Help":
+      text = "/help";
+      msg = returnMsgs(first_name).help;
+      break;
+    default:
+      msg = await getGeminiResponse(id, ctx.msg.text);
+  }
   await bot.api.sendChatAction(id, "typing");
-  const msg = returnMsgs(first_name).wallet;
-  await ctx.reply(msg, {
-    reply_markup: walletKeyboard,
-  });
-});
-bot.hears("➕ Installation", async (ctx) => {
-  const { first_name, id } = ctx.from;
-  await bot.api.sendChatAction(id, "typing");
-  const msg = returnMsgs(first_name).walletInstall;
-  await ctx.reply(msg, {
-    reply_markup: walletKeyboard,
-  });
-});
-bot.hears("🔗 Set Up Wallet", async (ctx) => {
-  const { first_name, id } = ctx.from;
-  bot.api.sendChatAction(id, "typing");
-  const msg = returnMsgs(first_name).walletSetUp;
-  await ctx.reply(msg, {
-    reply_markup: walletKeyboard,
-  });
-});
-bot.hears("🔐 Wallet Security", async (ctx) => {
-  const { first_name, id } = ctx.from;
-  await bot.api.sendChatAction(id, "typing");
-  const msg = returnMsgs(first_name).walletSec;
-  await ctx.reply(msg, {
-    reply_markup: walletKeyboard,
-  });
-});
-
-bot.hears("🚀 Getting Started", async (ctx) => {
-  const { first_name, id } = ctx.from;
-  await bot.api.sendChatAction(id, "typing");
-  const msg = returnMsgs(first_name).overview;
-  await ctx.reply(msg, {
-    parse_mode: "Markdown",
-  });
-});
-bot.hears("🌐 Community", async (ctx) => {
-  const { first_name, id } = ctx.from;
-  await bot.api.sendChatAction(id, "typing");
-  const msg = returnMsgs(first_name).community;
-  await ctx.reply(msg, {
-    parse_mode: "Markdown",
-  });
-});
-bot.hears("🗣️ Feedback", async (ctx) => {
-  const { first_name, id } = ctx.from;
-  await bot.api.sendChatAction(id, "typing");
-  const msg = returnMsgs(first_name).feedback;
-  await ctx.reply(msg, {
-    parse_mode: "Markdown",
-  });
-});
-bot.hears("💵 Earn", async (ctx) => {
-  const { first_name, id } = ctx.from;
-  await bot.api.sendChatAction(id, "typing");
-  const msg = returnMsgs(first_name).earn;
-  await ctx.reply(msg, {
-    parse_mode: "Markdown",
-    reply_markup: earnKeyboard,
-  });
-});
-bot.hears("🏛️ Farcaster", async (ctx) => {
-  const { first_name, id } = ctx.from;
-  await bot.api.sendChatAction(id, "typing");
-  const msg = returnMsgs(first_name).warpcast;
-  await ctx.reply(msg, {
-    parse_mode: "Markdown",
-    reply_markup: earnKeyboard,
-  });
-  const fs = new InputFile(
-    new URL(
-      "https://github.com/solomonadzape95/adonis/blob/master/assets/warpcast.png"
-    )
+  await ctx.reply(
+    msg,
+    kb && {
+      parse_mode: "Markdown",
+      reply_markup: kb,
+    }
   );
-  await ctx.replyWithPhoto(fs);
-});
-bot.hears("🕶️ Rounds", async (ctx) => {
-  const { first_name, id } = ctx.from;
-  await bot.api.sendChatAction(id, "typing");
-  const msg = returnMsgs(first_name).rounds;
-  await ctx.reply(msg, {
-    parse_mode: "Markdown",
-    reply_markup: earnKeyboard,
-  });
 });
 bot.command("home", async (ctx) => {
   await ctx.reply("Home Menu:", { reply_markup: keyboard });
-  // await ctx.editMessageReplyMarkup({ reply_markup: keyboard });
 });
 bot.command("review", async (ctx) => {
   const msg = ctx.match;
@@ -141,6 +157,5 @@ bot.command("review", async (ctx) => {
 "${msg}"`
   );
   await ctx.reply("Review Sent😁", { reply_markup: keyboard });
-  // await ctx.editMessageReplyMarkup({ reply_markup: keyboard });
 });
 export default webhookCallback(bot, "std/http");
