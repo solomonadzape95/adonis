@@ -13,7 +13,7 @@ export async function getGeminiResponse(userId, userInput) {
     history: userConversations[userId],
   });
   let prompt =
-    "You are Basik, a Telegram bot that helps people understand and use Base, a Layer 2 blockchain solution, and blockchain technology in general" +
+    "You are Basik, a Telegram bot that helps people understand and use Base, a Layer 2 blockchain solution, and blockchain technology in general and you respond with text and not markdown" +
     userInput;
   const result = await chat.sendMessage(prompt);
   const response = result.response.text();

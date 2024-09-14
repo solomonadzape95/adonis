@@ -11,19 +11,27 @@ export const keyboard = new Keyboard()
   .text("❓ FAQ")
   .text("🗣️ Feedback")
   .text("🆘 Help")
-  .resized();
+  .resized()
+  .oneTime();
 
 export const walletKeyboard = new Keyboard()
   .text("➕ Installation", "install")
   .row()
   .text("🔗 Set Up Wallet", "connect")
   .row()
-  .text("🔐 Wallet Security", "security");
+  .text("🔐 Wallet Security", "security")
+  .row()
+  .text("🔙 Back", "back")
+  .resized()
+  .oneTime();
 
 export const earnKeyboard = new Keyboard()
   .text("🕶️ Rounds")
+  .text("🏛️ Farcaster")
   .row()
-  .text("🏛️ Farcaster");
+  .text("🔙 Back", "back")
+  .resized()
+  .oneTime();
 export const faqKeyboard = new Keyboard()
   .text("I am a complete newbie, I know nothing😫")
   .row()
@@ -31,4 +39,8 @@ export const faqKeyboard = new Keyboard()
   .row()
   .text("Whats the difference between Farcaster and Warpcast?🤷")
   .row()
-  .text("What makes Base better than other Ethereum L2s?🤔");
+  .text("What makes Base better than other Ethereum L2s?🤔")
+  .row()
+  .text("🔙 Back", "back")
+  .resized()
+  .oneTime();

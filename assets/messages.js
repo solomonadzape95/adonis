@@ -6,6 +6,7 @@ Here's how I can help you
   💼 Set Up Wallet - Learn about Setting up Wallets on Base
   🖥️ Dapps - Learn about dapps built on the Base network
   🤝 Community - Join our vibrant community
+  🚿 Faucet Guide - Learn how you can get testnet tokens
   💵 Earn - Learn how you can earn on Base
   ❓ FAQ - Get answers to other users' most asked questions
   🗣️ Feedback - Send your feedback to the development team
@@ -27,19 +28,21 @@ dApps stand for decentralized applications. They have the following features:
 
 Popular dApps on Base:
 
-[Aerodrome 🛩️](http://aerodrome.finance/)
+Aerodrome 🛩️ - http://aerodrome.finance/
 • Decentralized exchange (DEX)
 • Swap tokens, provide liquidity
-[Baseswap 💱](https://baseswap.fi/)
+
+Baseswap 💱 - https://baseswap.fi/
 • Another popular DEX on Base
 • Features yield farming
-[Mint Fun 🎨](https://mint.fun/feed/trending)
+
+Mint Fun 🎨 - https://mint.fun/feed/trending
 • NFT launchpad and marketplace
 • Discover and create new NFT projects
 
 You can find comprehensive lists of dApps on Base at:
-▪️ [Base Website](https://www.base.org/ecosystem)🟦
-▪️ [Maester](https://maester.xyz)🟪
+▪️ Base Website🟦 - https://www.base.org/ecosystem
+▪️ Maester🟪 - https://maester.xyz
 
 How to Use dApps🤔:
 
@@ -53,7 +56,7 @@ Have fun exploring the Base Ecosystem😁!!`,
 Rounds is a platform for recurring funding sessions or 'rounds' as they are called
 ⚡ Quick Start:
 
-▪️ Visit [rounds.wtf](https://rounds.wtf/)
+▪️ Visit rounds.wtf - https://rounds.wtf/
 ▪️ Connect your Base-compatible wallet
 ▪️ Explore projects or 'rounds'
 ▪️ Fund projects or receive funding
@@ -71,7 +74,7 @@ Farcaster is a decentralized social network built on Base. Imagine Twitter (thin
 Crazy right?😁
 🚀 Getting Started:
 
-▪️ Install the app or visit the [Warpcast](https://www.warpcast.com) website
+▪️ Install the app or visit the Warpcast - https://www.warpcast.com website
 ▪️ Set up your account. You'd have to connect your wallet and pay a small fee    (Its  on the blockchain remember, so all the gas fees and stuff😫. Its for a  year though and you'd get your money back in no time😁)
 ▪️ Create your profile (username, picture, bio)
 ▪️ Start engaging (cast, follow, like, comment)
@@ -146,13 +149,13 @@ Base is a secure, low-cost, and developer-friendly blockchain designed to bring 
 
   ${first_name}, here are some fantastic resources to get you started on Base:
 
-🔗 [Official Site](https://base.org/)
+🔗 Official Site - https://base.org/
    From zero to hero in no time!
 
-🔗 [Documentation](https://docs.base.org/)
+🔗 Documentation - https://docs.base.org/
    Your go-to guide for all things Base
 
-🔗 [API Reference](https://docs.alchemy.com/reference/base-api-quickstart)
+🔗 API Reference - https://docs.alchemy.com/reference/base-api-quickstart
    For when you're ready to build!
 
 Happy learning! 🧠✨
@@ -160,15 +163,14 @@ Happy learning! 🧠✨
     wallet: `Wallet Setup Guide for Base 💼
 What is a Crypto Wallet? 🤔
 A crypto wallet is your gateway to the blockchain world. It's like a digital bank account that allows you to:
-
-Store and manage your cryptocurrencies
-Send and receive transactions
-Interact with decentralized applications (dApps)
+• Store and manage your cryptocurrencies
+• Send and receive transactions
+• Interact with decentralized applications (dApps)
 
 For Base, we'll be using the Onboard wallet, a user-friendly option perfect for beginners and experienced users alike.`,
     walletInstall: `Installing Onboard Wallet 📲
 
- [Visit the official Onboard wallet website:](https://www.onboard.xyz)
+Visit the official Onboard wallet website: - https://www.onboard.xyz
 Click on "Download" or "Get Started"
 Choose the version for your device (iOS, Android, or browser extension)
 Follow the installation prompts on your device
@@ -226,7 +228,7 @@ A: No worries! Here's a quick start:
 • Explore Base and Base dApps
 •  Join The Base community on Discord or Twitter
 
-Heres a youtube video that can help [What is a blockchain](https://youtu.be/2m0azblg-To?si=75pfmMGDfDX7Qvgx)`,
+Heres a youtube video that can help What is a Blockchain - https://youtu.be/2m0azblg-To?si=75pfmMGDfDX7Qvgx`,
     q3: `Q: What's the difference between Farcaster and Warpcast?🤷
 
 A: Farcaster is the decentralized social protocol, while Warpcast is a popular client app for accessing the Farcaster network. Think of Farcaster as the underlying system and Warpcast as one way to interact with it.`,
@@ -246,15 +248,15 @@ Check out https://docs.base.org for comprehensive dev guides!`,
 
 Connect with fellow enthusiasts and get support:
 
-🔹 [Twitter](https://x.com/baseafricaa?s=21)
+🔹 Twitter - https://x.com/baseafricaa?s=21
    Follow our Base community for updates, insights, and news.
    Join the scaling revolution!
 
-🔹 [Whatsapp](https://tinyurl.com/25r32b6v)
+🔹 Whatsapp - https://tinyurl.com/25r32b6v
    Join Base enthusiasts on WhatsApp!
    Connect and Discuss all things Base!!.
 
-🔹 [Discord](https://discord.gg/JNTUSasX)
+🔹 Discord - https://discord.gg/JNTUSasX
    Explore Base with us on Discord.
    From dev talks to exciting discussions, We've got it all.
 

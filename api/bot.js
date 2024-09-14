@@ -8,6 +8,7 @@ import {
   walletKeyboard,
 } from "../assets/keyboards";
 import { getGeminiResponse } from "../assets/gemini";
+// import telegramifyMarkdown from "telegramify-markdown";
 export const config = {
   runtime: "edge",
 };
@@ -33,11 +34,27 @@ bot.command("start", async (ctx) => {
   await ctx.reply(msg, {
     reply_markup: keyboard,
   });
-  if (!users.find((x) => x?.id === id)) return;
   const devRep = `Hey Mom, ${first_name} started a chat with me today😁.
   `;
   await bot.api.sendMessage(devID, devRep);
   users.push({ first_name, id });
+});
+bot.command("home", async (ctx) => {
+  await ctx.reply("Going Home...", { reply_markup: keyboard });
+});
+bot.command("review", async (ctx) => {
+  const msg = ctx.match;
+  if (msg === "") {
+    await ctx.reply("You know you didn't actually send a message right?🤔");
+    return;
+  }
+  const { first_name } = ctx.from;
+  await bot.api.sendMessage(
+    devID,
+    `${first_name} sent a review :
+"${msg}"`
+  );
+  await ctx.reply("Review Sent😁", { reply_markup: keyboard });
 });
 bot.on("message:text", async (ctx) => {
   const { first_name, id } = ctx.from;
@@ -129,9 +146,18 @@ bot.on("message:text", async (ctx) => {
       text = "/help";
       msg = returnMsgs(first_name).help;
       break;
+    case "/help":
+      msg = returnMsgs(first_name).help;
+      break;
+    case "🔙 Back":
+      text = "/home";
+      msg = "Going Back...";
+      kb = keyboard;
+      break;
     default:
       msg = await getGeminiResponse(id, ctx.msg.text);
   }
+  // const editedMsg = telegramifyMarkdown(msg);
   await bot.api.sendChatAction(id, "typing");
   await ctx.reply(
     msg,
@@ -141,21 +167,5 @@ bot.on("message:text", async (ctx) => {
     }
   );
 });
-bot.command("home", async (ctx) => {
-  await ctx.reply("Home Menu:", { reply_markup: keyboard });
-});
-bot.command("review", async (ctx) => {
-  const msg = ctx.match;
-  if (msg === "") {
-    await ctx.reply("You know you didn't actually send a message right?🤔");
-    return;
-  }
-  const { first_name } = ctx.from;
-  await bot.api.sendMessage(
-    devID,
-    `${first_name} sent a review :
-"${msg}"`
-  );
-  await ctx.reply("Review Sent😁", { reply_markup: keyboard });
-});
+
 export default webhookCallback(bot, "std/http");
