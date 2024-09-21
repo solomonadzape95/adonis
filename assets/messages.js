@@ -85,7 +85,7 @@ Crazy right?😁
 ▪️ Create your profile (username, picture, bio)
 ▪️ Start engaging (cast, follow, like, comment)
 You can ask me any more questions you have about Farcaster, I'll be more than happy to help😁
-`,
+If you're done signing up on warpcast, you can use the command /setup to get a video on what to do next`,
     faucet: `Getting Testnet Tokens on Base 💧
 Need tokens to experiment on Base Sepolia testnet? Here's how to use the faucet:
 What's a Faucet? 🚰
@@ -163,7 +163,7 @@ Base is a secure, low-cost, and developer-friendly blockchain designed to bring 
 
 🔗 API Reference - https://docs.alchemy.com/reference/base-api-quickstart
    For when you're ready to build!
-
+If you'd like a video explaining what Base is all about, use the command /video
 Happy learning! 🧠✨
     `,
     wallet: `Wallet Setup Guide for Base 💼

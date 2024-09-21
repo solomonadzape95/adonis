@@ -30,11 +30,9 @@ export const extraKeyboard = new Keyboard()
   .oneTime();
 export const walletKeyboard = new Keyboard()
   .text("➕ Installation", "install")
-  .row()
   .text("🔗 Set Up Wallet", "connect")
   .row()
   .text("🔐 Wallet Security", "security")
-  .row()
   .text("🔙 Back", "back")
   .resized()
   .oneTime();

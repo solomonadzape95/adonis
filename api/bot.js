@@ -21,7 +21,7 @@ export const config = {
 const devID = parseInt(process.env.BOT_DEVELOPER);
 const token = process.env.BOT_TOKEN;
 if (!token) throw new Error("BOT_TOKEN is unset");
-
+//sorry my code is tattered :) had to rush some things
 const bot = new Bot(token);
 bot.use(async (ctx, next) => {
   ctx.config = {
@@ -31,7 +31,6 @@ bot.use(async (ctx, next) => {
   // Run remaining handlers.
   await next();
 });
-// let fileId;
 bot.command("start", async (ctx) => {
   const { first_name, id } = ctx.from;
   await bot.api.sendChatAction(id, "typing");
@@ -80,26 +79,45 @@ bot.command("bs", async (ctx) => {
   \n<b>Time Left: ${time}</b>\nParticipate: <a href="https://warpcast.com/~/channel/base-creators">base-creators</a>\nLearn More: <a href="https://x.com/kokocodes/status/1836535191055073502?s=46">Participating in Based Singapore</a>`;
   await ctx.reply(markup, { parse_mode: "HTML", reply_markup: infoKeyboard });
 });
-// bot.command("video", async (ctx) => {
-//   await ctx.replyWithVideo(fileId);
-// });
-// bot.on(":media", async (ctx) => {
+bot.command(["video", "setup"], async (ctx) => {
+  const { id } = ctx.from;
+  let fileID = ctx.message.text.includes("video")
+    ? process.env.VID_B
+    : process.env.VID_A;
+  await bot.api.sendChatAction(id, "upload_video");
+  await ctx.replyWithVideo(fileID);
+});
+bot.reaction("🎉", (ctx) => {
+  ctx.reply("Partaaaay Time");
+});
+bot.on("message_reaction", async (ctx) => {
+  const reaction = ctx.messageReaction;
+  // const message = reaction.message_id;
+  await ctx.reply(reaction.new_reaction);
+});
+bot.on([":file", ":media"], async (ctx) => {
+  const { first_name } = ctx.from;
+  const msg = `Sorry ${first_name}, I can't handle your files right now.
+  Yeah, I know 😔
+  But I will be able to soon 😁
+  You can use the keyboard below or ask me a question`;
+  await ctx.reply(msg, { parse_mode: "Markdown", reply_markup: keyboard });
+});
+// bot.on("message:video", async (ctx) => {
 //   const { first_name, id } = ctx.from;
-//   const video = ctx.message.video;
-//   if (first_name === devID) {
-//     fileId = video.file_id;
+//   const file = await ctx.getFile(); // valid for at least 1 hour
+//   let path = file.file_path;
+//   if (id === devID) {
+//     let file = ctx.message.video;
+//     let fileid = file.file_id; // file path on Bot API server
+//     await ctx.reply("Download your own file again: " + path + fileid);
 //   }
-
-//   console.log(`Received video with file_id: ${fileId}`);
-//   // await ctx.replyWithVideo(fileId);
 // });
 
 bot.on("message:text", async (ctx) => {
   const { first_name, id } = ctx.from;
-  let text = "";
-  let msg,
-    kb,
-    prevKB = keyboard;
+
+  let msg, kb, text;
   switch (ctx.msg.text) {
     case "💳 Wallet":
       text = "/wallet";
@@ -197,7 +215,7 @@ bot.on("message:text", async (ctx) => {
     case "🔙 Back":
       text = "/home";
       msg = "...";
-      kb = prevKB;
+      kb = keyboard;
       break;
     case "➕ More":
       text = "/more";
@@ -207,16 +225,17 @@ bot.on("message:text", async (ctx) => {
     default:
       msg = await getGeminiResponse(id, ctx.msg.text);
   }
-  // const editedMsg = telegramifyMarkdown(msg);
+  msg = msg.includes("**") ? msg.replace(/\*\*/g, "") : msg;
   await bot.api.sendChatAction(id, "typing");
   await ctx.reply(
     msg,
-    kb && {
-      parse_mode: "Markdown",
-      reply_markup: kb,
-    }
+    kb
+      ? {
+          parse_mode: "Markdown",
+          reply_markup: kb,
+        }
+      : { reply_parameters: { message_id: ctx.msg.message_id } }
   );
-  prevKB = kb;
 });
 
 export default webhookCallback(bot, "std/http");
