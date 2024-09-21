@@ -76,7 +76,7 @@ bot.command("bs", async (ctx) => {
   let msg = await fetchRounds(666);
   let time = timeLeft(new Date(msg.votingEndsAt));
   let markup = `<b>${msg.name}</b>\n<b>Reward: ${msg.awardAmount} ${msg.award.assetType}</b>\n${msg.description}
-  \n<b>Time Left: ${time}</b>\nParticipate: <a href="https://warpcast.com/~/channel/base-creators">base-creators</a>`;
+  \n<b>Time Left: ${time}</b>\nParticipate: <a href="https://warpcast.com/~/channel/base-creators">base-creators</a>\nLearn More: <a href="https://x.com/kokocodes/status/1836535191055073502?s=46">Participating in Based Singapore</a>`;
   await ctx.reply(markup, { parse_mode: "HTML", reply_markup: infoKeyboard });
 });
 bot.on("message:text", async (ctx) => {

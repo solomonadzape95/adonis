@@ -8,6 +8,8 @@ Here's how I can help you
   🤝 Community - Join our vibrant community
   🚿 Faucet Guide - Learn how you can get testnet tokens
   💵 Earn - Learn how you can earn on Base
+  ➕ More - See more menu items
+  📒 Rounds Info - Learn how you can earn form currently active rounds
   ❓ FAQ - Get answers to other users' most asked questions
   🗣️ Feedback - Send your feedback to the development team
   🆘 Help - See this help message again.
