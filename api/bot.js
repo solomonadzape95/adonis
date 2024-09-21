@@ -101,7 +101,7 @@ bot.on("message:text", async (ctx) => {
     kb,
     prevKB = keyboard;
   switch (ctx.msg.text) {
-    case "💳 Set Up Wallet":
+    case "💳 Wallet":
       text = "/wallet";
       msg = returnMsgs(first_name).wallet;
       kb = walletKeyboard;
@@ -121,7 +121,7 @@ bot.on("message:text", async (ctx) => {
       msg = returnMsgs(first_name).walletSec;
       kb = walletKeyboard;
       break;
-    case "🚀 Getting Started":
+    case "🚀 Get Started":
       text = "/overview";
       msg = returnMsgs(first_name).overview;
       kb = keyboard;
@@ -178,7 +178,7 @@ bot.on("message:text", async (ctx) => {
       text = "/dapps";
       msg = returnMsgs(first_name).dapp;
       break;
-    case "🚿 Faucet Guide":
+    case "🚿 Faucets":
       text = "/faucet";
       msg = returnMsgs(first_name).faucet;
       break;
