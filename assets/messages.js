@@ -163,7 +163,7 @@ Base is a secure, low-cost, and developer-friendly blockchain designed to bring 
 
 🔗 API Reference - https://docs.alchemy.com/reference/base-api-quickstart
    For when you're ready to build!
-
+If you'd like a video explaining what Base is all about, use the command /video
 Happy learning! 🧠✨
     `,
     wallet: `Wallet Setup Guide for Base 💼

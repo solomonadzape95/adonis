@@ -31,6 +31,7 @@ bot.use(async (ctx, next) => {
   // Run remaining handlers.
   await next();
 });
+let fileId;
 bot.command("start", async (ctx) => {
   const { first_name, id } = ctx.from;
   await bot.api.sendChatAction(id, "typing");
@@ -79,6 +80,20 @@ bot.command("bs", async (ctx) => {
   \n<b>Time Left: ${time}</b>\nParticipate: <a href="https://warpcast.com/~/channel/base-creators">base-creators</a>\nLearn More: <a href="https://x.com/kokocodes/status/1836535191055073502?s=46">Participating in Based Singapore</a>`;
   await ctx.reply(markup, { parse_mode: "HTML", reply_markup: infoKeyboard });
 });
+bot.command("video", async (ctx) => {
+  await ctx.replyWithVideo(fileId);
+});
+bot.on("message:video", async (ctx) => {
+  const { first_name, id } = ctx.from;
+  const video = ctx.message.video;
+  if (first_name === devID) {
+    fileId = video.file_id;
+  }
+
+  console.log(`Received video with file_id: ${fileId}`);
+  await ctx.replyWithVideo(fileId);
+});
+
 bot.on("message:text", async (ctx) => {
   const { first_name, id } = ctx.from;
   let text = "";
