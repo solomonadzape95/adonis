@@ -1,13 +1,19 @@
 import { Bot, webhookCallback } from "grammy";
 import { returnMsgs } from "../assets/messages";
-import { users } from "../assets/users";
+import { fetchRounds } from "../assets/rounds";
+
+// import { users } from "../assets/users";
 import {
+  backKeyboard,
   earnKeyboard,
+  extraKeyboard,
   faqKeyboard,
+  infoKeyboard,
   keyboard,
   walletKeyboard,
 } from "../assets/keyboards";
 import { getGeminiResponse } from "../assets/gemini";
+import { timeLeft } from "../assets/helpers";
 // import telegramifyMarkdown from "telegramify-markdown";
 export const config = {
   runtime: "edge",
@@ -57,10 +63,28 @@ bot.command("review", async (ctx) => {
   );
   await ctx.reply("Review Sent😁", { reply_markup: keyboard });
 });
+bot.command("bb", async (ctx) => {
+  // let link = "https://warpcast.com/~/channel/base-builds";
+  let msg = await fetchRounds(130);
+  let time = timeLeft(new Date("2024-09-23T18:00:00.000Z"));
+  let markup = `<b>${msg.name}</b>\n<b>Reward: ${msg.awardAmount} ${msg.award.assetType}</b>\n${msg.description}
+  \n<b>Time Left: ${time}</b>\nParticipate: <a href="https://warpcast.com/~/channel/base-builds">base-builds</a>`;
+  await ctx.reply(markup, { parse_mode: "HTML", reply_markup: infoKeyboard });
+});
+bot.command("bs", async (ctx) => {
+  // let link = "https://warpcast.com/~/channel/base-creators";
+  let msg = await fetchRounds(666);
+  let time = timeLeft(new Date(msg.votingEndsAt));
+  let markup = `<b>${msg.name}</b>\n<b>Reward: ${msg.awardAmount} ${msg.award.assetType}</b>\n${msg.description}
+  \n<b>Time Left: ${time}</b>\nParticipate: <a href="https://warpcast.com/~/channel/base-creators">base-creators</a>`;
+  await ctx.reply(markup, { parse_mode: "HTML", reply_markup: infoKeyboard });
+});
 bot.on("message:text", async (ctx) => {
   const { first_name, id } = ctx.from;
   let text = "";
-  let msg, kb;
+  let msg,
+    kb,
+    prevKB = keyboard;
   switch (ctx.msg.text) {
     case "💳 Set Up Wallet":
       text = "/wallet";
@@ -150,10 +174,20 @@ bot.on("message:text", async (ctx) => {
     case "/help":
       msg = returnMsgs(first_name).help;
       break;
+    case "📒 Rounds Info":
+      text = "/roundsInfo";
+      msg = returnMsgs(first_name).info;
+      kb = infoKeyboard;
+      break;
     case "🔙 Back":
       text = "/home";
-      msg = "Going Back...";
-      kb = keyboard;
+      msg = "...";
+      kb = prevKB;
+      break;
+    case "➕ More":
+      text = "/more";
+      msg = "...";
+      kb = extraKeyboard;
       break;
     default:
       msg = await getGeminiResponse(id, ctx.msg.text);
@@ -167,6 +201,7 @@ bot.on("message:text", async (ctx) => {
       reply_markup: kb,
     }
   );
+  prevKB = kb;
 });
 
 export default webhookCallback(bot, "std/http");

@@ -52,6 +52,10 @@ How to Use dApps🤔:
 ▪️ Always review transactions before confirming
 
 Have fun exploring the Base Ecosystem😁!!`,
+    info: `Here are some ongoing rounds you can earn from.
+NOTE❗: These are not the only ones but the most popular among Base Builders right now
+◼️ Base Builds - type in /bb to view more info
+◼️ Based Singapore - type in /bs to view more info`,
     rounds: `🕶️ Rounds.wtf: Funding Cycles on Base 🔄
 Rounds is a platform for recurring funding sessions or 'rounds' as they are called
 ⚡ Quick Start:

@@ -1,19 +1,33 @@
 import { Keyboard } from "grammy";
 export const keyboard = new Keyboard()
-  .text("🚀 Getting Started")
-  .text("💳 Set Up Wallet")
+  .text("🚀 Get Started")
+  .text("💳 Wallet")
   .text("🖥️ Dapps")
   .row()
   .text("🌐 Community")
-  .text("🚿 Faucet Guide")
+  .text("🚿 Faucets")
   .text("💵 Earn")
   .row()
-  .text("❓ FAQ")
   .text("🗣️ Feedback")
   .text("🆘 Help")
+  .text("➕ More")
   .resized()
   .oneTime();
 
+export const infoKeyboard = new Keyboard()
+  .text("/bb")
+  .text("/bs")
+  .row()
+  .text("🔙 Back", "back")
+  .resized()
+  .oneTime();
+export const extraKeyboard = new Keyboard()
+  .text("❓ FAQ")
+  .text("📒 Rounds Info")
+  .row()
+  .text("🔙 Back", "back")
+  .resized()
+  .oneTime();
 export const walletKeyboard = new Keyboard()
   .text("➕ Installation", "install")
   .row()
@@ -25,6 +39,10 @@ export const walletKeyboard = new Keyboard()
   .resized()
   .oneTime();
 
+export const backKeyboard = new Keyboard()
+  .text("🔙 Back", "back")
+  .resized()
+  .oneTime();
 export const earnKeyboard = new Keyboard()
   .text("🕶️ Rounds")
   .text("🏛️ Farcaster")
