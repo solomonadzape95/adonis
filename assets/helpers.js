@@ -12,6 +12,7 @@ export function timeLeft(later) {
   }H, ${differenceInMinutes(later, today) % 60}M ${
     differenceInSeconds(later, today) % 60
   }S`;
+  time = differenceInHours(later, today) % 24 < 0 ? "Rounds have Ended" : time;
   return time;
 }
 // export async function addLinks(desc, link) {
