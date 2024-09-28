@@ -54,10 +54,23 @@ How to Use dApps🤔:
 ▪️ Always review transactions before confirming
 
 Have fun exploring the Base Ecosystem😁!!`,
+    build: `The Based All Around The World Buildathon is here!!
+Build a dapp to solve a problem in your local community or use existing onchain tools to bring your community onchain and stand a chance to win from a prize pool of 100 ETH in prizes!!
+The buildathon is taking place in four regions in the world: Latin America, Africa, India and South East Asia.
+And guess what, the winners get a chance to meet Jesse in a meetup organized in their region!
+Register in your region - https://devfolio.co/
+Learn More About the Buildathon - https://x.com/kokocodes/status/1838600636008432042?s=46
+Check out BaseSpace for more info about events on Base:
+X - https://x.com/BaseSpacee?s=09
+Telegram - https://t.me/BaseSpace01
+      `,
     info: `Here are some ongoing rounds you can earn from.
 NOTE❗: These are not the only ones but the most popular among Base Builders right now
 ◼️ Base Builds - type in /bb to view more info
-◼️ Based Singapore - type in /bs to view more info`,
+◼️ Based All Around The World - type in /bc to view more info
+Check out BaseSpace for more info about events on Base:
+X - https://x.com/BaseSpacee?s=09
+Telegram - https://t.me/BaseSpace01`,
     rounds: `🕶️ Rounds.wtf: Funding Cycles on Base 🔄
 Rounds is a platform for recurring funding sessions or 'rounds' as they are called
 ⚡ Quick Start:

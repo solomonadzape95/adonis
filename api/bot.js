@@ -65,18 +65,18 @@ bot.command("review", async (ctx) => {
 });
 bot.command("bb", async (ctx) => {
   // let link = "https://warpcast.com/~/channel/base-builds";
-  let msg = await fetchRounds(130);
-  let time = timeLeft(new Date("2024-09-23T18:00:00.000Z"));
+  let msg = await fetchRounds(242);
+  let time = timeLeft(new Date("2024-09-30T20:00:00.000Z"));
   let markup = `<b>${msg.name}</b>\n<b>Reward: ${msg.awardAmount} ${msg.award.assetType}</b>\n${msg.description}
   \n<b>Time Left: ${time}</b>\nParticipate: <a href="https://warpcast.com/~/channel/base-builds">base-builds</a>`;
   await ctx.reply(markup, { parse_mode: "HTML", reply_markup: infoKeyboard });
 });
-bot.command("bs", async (ctx) => {
+bot.command("bc", async (ctx) => {
   // let link = "https://warpcast.com/~/channel/base-creators";
-  let msg = await fetchRounds(666);
+  let msg = await fetchRounds(707);
   let time = timeLeft(new Date(msg.votingEndsAt));
   let markup = `<b>${msg.name}</b>\n<b>Reward: ${msg.awardAmount} ${msg.award.assetType}</b>\n${msg.description}
-  \n<b>Time Left: ${time}</b>\nParticipate: <a href="https://warpcast.com/~/channel/base-creators">base-creators</a>\nLearn More: <a href="https://x.com/kokocodes/status/1836535191055073502?s=46">Participating in Based Singapore</a>`;
+  \n<b>Time Left: ${time}</b>\nParticipate: <a href="https://warpcast.com/~/channel/base-creators">base-creators</a>`;
   await ctx.reply(markup, { parse_mode: "HTML", reply_markup: infoKeyboard });
 });
 bot.command(["video", "setup"], async (ctx) => {
@@ -143,6 +143,10 @@ bot.on("message:text", async (ctx) => {
       text = "/overview";
       msg = returnMsgs(first_name).overview;
       kb = keyboard;
+      break;
+    case "🔨 Buildathon":
+      text = "/build";
+      msg = returnMsgs(first_name).build;
       break;
     case "🌐 Community":
       text = "/community";

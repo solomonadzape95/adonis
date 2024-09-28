@@ -1,4 +1,4 @@
-import { Keyboard } from "grammy";
+import { Keyboard } from "grammy"
 export const keyboard = new Keyboard()
   .text("🚀 Get Started")
   .text("💳 Wallet")
@@ -16,13 +16,14 @@ export const keyboard = new Keyboard()
 
 export const infoKeyboard = new Keyboard()
   .text("/bb")
-  .text("/bs")
+  .text("/bc")
   .row()
   .text("🔙 Back", "back")
   .resized()
   .oneTime();
 export const extraKeyboard = new Keyboard()
   .text("❓ FAQ")
+  .text("🔨 Buildathon")
   .text("📒 Rounds Info")
   .row()
   .text("🔙 Back", "back")
