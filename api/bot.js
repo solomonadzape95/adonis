@@ -87,14 +87,14 @@ bot.command(["video", "setup"], async (ctx) => {
   await bot.api.sendChatAction(id, "upload_video");
   await ctx.replyWithVideo(fileID);
 });
-bot.reaction("🎉", (ctx) => {
-  ctx.reply("Partaaaay Time");
-});
-bot.on("message_reaction", async (ctx) => {
-  const reaction = ctx.messageReaction;
-  // const message = reaction.message_id;
-  await ctx.reply(reaction.new_reaction);
-});
+// bot.reaction("🎉", (ctx) => {
+//   ctx.reply("Partaaaay Time");
+// });
+// bot.on("message_reaction", async (ctx) => {
+//   const reaction = ctx.messageReaction;
+//   // const message = reaction.message_id;
+//   await ctx.reply(reaction.new_reaction);
+// });
 bot.on([":file", ":media"], async (ctx) => {
   const { first_name } = ctx.from;
   const msg = `Sorry ${first_name}, I can't handle your files right now.
