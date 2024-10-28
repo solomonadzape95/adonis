@@ -246,7 +246,8 @@ Start a message with '/review', give a space and type out your message`,
     learn: `Hey ${first_name}, Want to learn about blockchain in a fun and exciting way?
 Sign Up on Lumina 💡, and get interactive content that fit whatever way you learn. 
 Audio 🔉, Video 🎥, Text, Pictures 🖼️ and Presentation formats, we aim to provide access to blockchain education wherever you are in whatever medium you want.
-And you get to win cool nfts too 😁😁`,
+All of this while getting nft certificates for your achievements in the dapp
+Click here to check it out 👇🏾`,
     q4: `Q: What makes Base better than other Ethereum L2s?
 
 A: Base stands out with:
