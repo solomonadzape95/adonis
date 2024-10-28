@@ -4,7 +4,7 @@ import { InlineKeyboard, Keyboard } from "grammy";
 
 export const learnkeyboard = new InlineKeyboard().webApp(
   "📱 Try Lumina In Telgram",
-  `https://www.learnonlumina.xyz`
+  `https://lumina-swart-nine.vercel.app/`
 );
 export const keyboard = new Keyboard()
   .text("🚀 Get Started")

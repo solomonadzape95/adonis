@@ -26,6 +26,8 @@ import {
   checkAndResetGuesses,
   getWords,
   resetWords,
+  updateUser,
+  checkLeaderboard,
 } from "../assets/dataHelpers";
 
 export const config = {
@@ -246,6 +248,7 @@ bot.command("guess", async (ctx) => {
           gameState.group_id,
           `@zappas_jnr tip $50 brens to @${ctx.from.username}`
         );
+        await updateUser(id);
         // Delete game from database
         await deleteGame(gameState.group_id);
       } catch (error) {
@@ -303,6 +306,20 @@ bot.command("stats", async (ctx) => {
     `Bot Statistics:\nTotal Users: ${totalUsers.length} ${words}`,
     { reply_to_message_id: ctx.message.message_id }
   );
+});
+bot.command("board", async (ctx) => {
+  if (ctx.from.id !== devID || ctx.config.isGroupChat) return;
+
+  const words = await checkLeaderboard();
+  let message = "";
+  words.map(
+    (word) =>
+      (message += word.row.replace(/\(|\)/g, "").replace(",", ":") + `\n`)
+  );
+
+  await ctx.reply(message, {
+    reply_to_message_id: ctx.message.message_id,
+  });
 });
 bot.command("resetwords", async (ctx) => {
   if (ctx.from.id !== devID || ctx.config.isGroupChat) return;

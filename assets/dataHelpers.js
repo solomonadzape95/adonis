@@ -7,19 +7,30 @@ export async function addUser(user) {
         ON CONFLICT (id) DO NOTHING
         RETURNING *`;
     if (result.rowCount > 0) {
-      console.log("User added", result.rows[0]);
+    //   console.log("User added", result.rows[0]);
     } else {
-      console.log("User already exists");
+    //   console.log("User already exists");
     }
   } catch (error) {
     console.error("Error adding user,", error);
+  }
+}
+
+export async function updateUser(id) {
+  try {
+    await sql`UPDATE users
+  SET correct_guesses = users.correct_guesses + 1
+  WHERE id = ${id}`;
+    // console.log("updated");
+  } catch (error) {
+    console.error("Error updating user,", error);
   }
 }
 export async function getWords() {
   try {
     const { rows } = await sql`SELECT * FROM words
     WHERE picked = FALSE`;
-    console.log("Words: ", rows);
+    // console.log("Words: ", rows);
     const word = await rows[Math.floor(Math.random() * rows.length)];
     const result = await sql`UPDATE words
     set picked = TRUE
@@ -29,12 +40,13 @@ export async function getWords() {
     console.error("Error getting words:", error);
   }
 }
+
 export async function resetWords() {
   try {
     const result = await sql`UPDATE words
     SET picked = FALSE
     RETURNING *`;
-    console.log("Reset words successfully");
+    // console.log("Reset words successfully");
     return result;
   } catch (err) {
     console.error("Error resetting words:", err);
@@ -43,7 +55,16 @@ export async function resetWords() {
 export async function getUsers() {
   try {
     const { rows } = await sql`SELECT * FROM users`;
-    console.log("Users:", rows);
+    // console.log("Users:", rows);
+    return rows;
+  } catch (error) {
+    console.error("Error fetching users:", error);
+  }
+}
+export async function checkLeaderboard() {
+  try {
+    const { rows } = await sql`SELECT (first_name, correct_guesses) FROM users`;
+    // console.log("Users:", rows);
     return rows;
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -55,7 +76,7 @@ export async function getGuesses(id) {
     WHERE id = ${id}`;
     if (rows.length > 0) {
       const guess_count = rows[0].guess_count;
-      console.log(guess_count);
+    //   console.log(guess_count);
       return guess_count;
     } else {
       console.error("User not found");
@@ -71,7 +92,7 @@ export async function updateGuesses(id, newGuess) {
     UPDATE users
     SET guess_count = ${newGuess}
     WHERE id = ${id}`;
-    console.log("User Updated");
+    // console.log("User Updated");
   } catch (err) {
     console.error("Error editing user guesses");
   }
@@ -88,7 +109,7 @@ export async function initializeTables() {
         identifier TEXT UNIQUE NOT NULL
       )`;
 
-    console.log("Active games table initialized");
+    // console.log("Active games table initialized");
   } catch (error) {
     console.error("Error initializing tables:", error);
   }
@@ -156,7 +177,7 @@ export async function createGame(groupId, word, clue, groupName, identifier) {
       WHERE group_id = ${groupId}
       AND game_date = CURRENT_DATE`;
 
-    console.log("Query result:", rows); // Debug log
+    // console.log("Query result:", rows); // Debug log
 
     let currentGamesPlayed = 0;
 
@@ -164,7 +185,7 @@ export async function createGame(groupId, word, clue, groupName, identifier) {
       currentGamesPlayed = rows[0].games_played;
     }
 
-    console.log("Current games played:", currentGamesPlayed); // Debug log
+    // console.log("Current games played:", currentGamesPlayed); // Debug log
 
     // Check if the group has played less than 2 games today
     if (currentGamesPlayed < 2) {
@@ -225,7 +246,7 @@ export async function resetDailyGuesses() {
       UPDATE users 
       SET guess_count = 3 
       WHERE TRUE`;
-    console.log("Reset all users' guesses to 3");
+    // console.log("Reset all users' guesses to 3");
   } catch (error) {
     console.error("Error resetting guesses:", error);
   }
