@@ -1,4 +1,11 @@
-import { Keyboard } from "grammy"
+import { InlineKeyboard, Keyboard } from "grammy";
+// Keyboard configurations
+// createSelectiveKeyboard(new Keyboard().remove(), id);
+
+export const learnkeyboard = new InlineKeyboard().webApp(
+  "📱 Try Lumina In Telgram",
+  `https://www.learnonlumina.xyz`
+);
 export const keyboard = new Keyboard()
   .text("🚀 Get Started")
   .text("💳 Wallet")
@@ -13,42 +20,43 @@ export const keyboard = new Keyboard()
   .text("➕ More")
   .resized()
   .oneTime();
-
-export const infoKeyboard = new Keyboard()
-  .text("/bb")
-  .text("/bc")
+export const mainInlineKeyboard = new InlineKeyboard()
+  .text("🚀 Get Started", "overview")
+  .text("💳 Wallets", "wallet")
   .row()
-  .text("🔙 Back", "back")
-  .resized()
-  .oneTime();
+  .text("🔨 Buildathon", "build")
+  .text("🌐 Community", "community")
+  .row()
+  .text("💵 Earn", "earn")
+  .text("➕ More", "more");
+
+export const infoKeyboard = new InlineKeyboard()
+  .text("Base Builds", "bb")
+  .text("Base Creators", "bc")
+  .row()
+  .text("🔙 Back", "back");
 export const extraKeyboard = new Keyboard()
   .text("❓ FAQ")
   .text("🔨 Buildathon")
-  .text("📒 Rounds Info")
+  .text("✈️ Jesse's Visit")
   .row()
   .text("🔙 Back", "back")
-  .resized()
-  .oneTime();
+  .resized();
+
 export const walletKeyboard = new Keyboard()
   .text("➕ Installation", "install")
   .text("🔗 Set Up Wallet", "connect")
   .row()
   .text("🔐 Wallet Security", "security")
   .text("🔙 Back", "back")
-  .resized()
-  .oneTime();
+  .resized();
 
-export const backKeyboard = new Keyboard()
-  .text("🔙 Back", "back")
-  .resized()
-  .oneTime();
-export const earnKeyboard = new Keyboard()
-  .text("🕶️ Rounds")
-  .text("🏛️ Farcaster")
+export const backKeyboard = new Keyboard().text("🔙 Back", "back");
+export const earnKeyboard = new InlineKeyboard()
+  .text("🕶️ Rounds", "rounds")
+  .text("🏛️ Farcaster", "warpcast")
   .row()
-  .text("🔙 Back", "back")
-  .resized()
-  .oneTime();
+  .text("🔙 Back", "back");
 export const faqKeyboard = new Keyboard()
   .text("I am a complete newbie, I know nothing😫")
   .row()
@@ -58,6 +66,4 @@ export const faqKeyboard = new Keyboard()
   .row()
   .text("What makes Base better than other Ethereum L2s?🤔")
   .row()
-  .text("🔙 Back", "back")
-  .resized()
-  .oneTime();
+  .text("🔙 Back", "back");

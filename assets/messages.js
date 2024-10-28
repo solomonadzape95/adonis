@@ -1,5 +1,21 @@
 export function returnMsgs(first_name) {
   return {
+    helpa: `Hey ${first_name}!
+Here's how I can help you:
+ /comedm - use this to request a dm from me 😁
+ /learn - use this to learn about blockchain in Telegram 📖
+ /game - use this to start an instance of the word guessing game    in this group 🎮
+ /guess - use this with your guess and your group identifier in     your dm to make a guess 🙋🏾‍♀️
+ /activegames - use this in your dm to know the number of active    games and their details 🔥
+/read - use this with a message or question you have for me ❓      (like : '/read what is base' )
+/review - use this to send a review to my developers 📝 
+    (like : '/review i love this bot!)
+/help - to see this help message again 🆘
+
+You can also reply a message of mine and ask me anything about Base or blockchain technology, and I'll do my best to help!
+
+What would you like to know more about?
+    `,
     help: `Hey ${first_name}!
 Here's how I can help you
   🚀 Getting Started - Learn about Base
@@ -15,7 +31,6 @@ Here's how I can help you
   🆘 Help - See this help message again.
 
   Other Commands:
-  /home - to go to the main menu
   /help - to see this help message again
 You can also ask me anything about Base or blockchain technology, and I'll do my best to help!
 
@@ -54,23 +69,22 @@ How to Use dApps🤔:
 ▪️ Always review transactions before confirming
 
 Have fun exploring the Base Ecosystem😁!!`,
-    build: `The Based All Around The World Buildathon is here!!
-Build a dapp to solve a problem in your local community or use existing onchain tools to bring your community onchain and stand a chance to win from a prize pool of 100 ETH in prizes!!
-The buildathon is taking place in four regions in the world: Latin America, Africa, India and South East Asia.
-And guess what, the winners get a chance to meet Jesse in a meetup organized in their region!
-Register in your region - https://devfolio.co/
-Learn More About the Buildathon - https://x.com/kokocodes/status/1838600636008432042?s=46
+    build: `The Based All Around the World buildathon has been completed and the judging is ongoing.
+Did you participate in the buildathon? If yes, go to your profile on devfolio and vote for projects that catch your eye while waiting for the results.
+Tune in on the 31st of October for the results!!
+- https://devfolio.co/discover
 Check out BaseSpace for more info about events on Base:
 X - https://x.com/BaseSpacee?s=09
 Telegram - https://t.me/BaseSpace01
       `,
-    info: `Here are some ongoing rounds you can earn from.
-NOTE❗: These are not the only ones but the most popular among Base Builders right now
-◼️ Base Builds - type in /bb to view more info
-◼️ Based All Around The World - type in /bc to view more info
-Check out BaseSpace for more info about events on Base:
-X - https://x.com/BaseSpacee?s=09
-Telegram - https://t.me/BaseSpace01`,
+    info: `Starting this friday, Base's 001 builder, Jesse Pollak will be meeting with based builders around the world in the folowing cities:
+- Nairobi
+- Bangalore
+- Bangkok
+- Singapore
+- Manila
+If you are in any of these cities you can register for the meetup using the link below
+- https://base.mirror.xyz/Fk1jnSmh84MlauA1z-UogFjjNBu5VLF4JrKgyqVYhWA`,
     rounds: `🕶️ Rounds.wtf: Funding Cycles on Base 🔄
 Rounds is a platform for recurring funding sessions or 'rounds' as they are called
 ⚡ Quick Start:
@@ -229,6 +243,10 @@ Your wallet is now set up and connected to Base!`,
 Remember, your wallet's security is in your hands. Stay vigilant!`,
     feedback: `Are there any cool features you'd want me to have? Or you just want to commend my developers?😁
 Start a message with '/review', give a space and type out your message`,
+    learn: `Hey ${first_name}, Want to learn about blockchain in a fun and exciting way?
+Sign Up on Lumina 💡, and get interactive content that fit whatever way you learn. 
+Audio 🔉, Video 🎥, Text, Pictures 🖼️ and Presentation formats, we aim to provide access to blockchain education wherever you are in whatever medium you want.
+And you get to win cool nfts too 😁😁`,
     q4: `Q: What makes Base better than other Ethereum L2s?
 
 A: Base stands out with:

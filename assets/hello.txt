@@ -12,3 +12,506 @@ hello world !!
 hjkl - navigation
 iIaA - editing in  a line
 xr - changes in command mode
+
+
+
+import { Bot, webhookCallback, InlineKeyboard, Keyboard } from "grammy";
+import { returnMsgs } from "../assets/messages";
+import { fetchRounds } from "../assets/rounds";
+import { getGeminiResponse } from "../assets/gemini";
+import { timeLeft } from "../assets/helpers";
+import {
+  initializeTables,
+  createGame,
+  getActiveGame,
+  getAllActiveGames,
+  getGuesses,
+  getGameByIdentifier,
+  getUsers,
+  generateIdentifier,
+  updateGuesses,
+  deleteGame,
+  addUser,
+  checkAndResetGuesses,
+} from "../assets/dataHelpers";
+import {
+  earnKeyboard,
+  faqKeyboard,
+  infoKeyboard,
+  walletKeyboard,
+  keyboard,
+  mainInlineKeyboard,
+} from "../assets/keyboards";
+
+export const config = {
+  runtime: "edge",
+};
+
+// Bot configuration
+const devID = parseInt(process.env.BOT_TOKEN);
+const token = process.env.BOT_TOKEN;
+if (!token) throw new Error("BOT_TOKEN is unset");
+
+// Bot Implementation
+const bot = new Bot("7385792159:AAHBwe3oEuuHEJANQCki1iQr5OU1hUfC48U");
+
+const availableWords = [
+  {
+    word: "Dami",
+    clue: "Depicted by a crypto primate, this word once worked at the home of the aves",
+  },
+  {
+    word: "Yele",
+    clue: "As bright as they come, this word shares similarities with Joseph son of Jacob",
+  },
+  {
+    word: "cbBtc",
+    clue: "The first of the bunch decided to put on a blue coat, this word has no vowels",
+  },
+  {
+    word: "Pollak",
+    clue: "Day one Day one, its still day one, This word belongs to the double-o one",
+  },
+];
+
+// Middleware to handle user context
+bot.use(async (ctx, next) => {
+  const { id, first_name, last_name } = ctx.from;
+  await addUser({ id, first_name, last_name });
+  const isGroupChat =
+    ctx.chat?.type === "group" || ctx.chat?.type === "supergroup";
+  const isBotMentioned = ctx.message?.text
+    ?.toLowerCase()
+    .includes(`@${ctx.me.username?.toLowerCase()}`);
+  const isDM = ctx.chat?.type === "private";
+
+  ctx.config = {
+    isGroupChat,
+    isBotMentioned,
+    isDM,
+    shouldRespond: isDM || (isGroupChat && isBotMentioned),
+    isDeveloper: id === devID,
+  };
+
+  await next();
+});
+
+// Helper function to check if user has started the bot
+async function hasUserStartedBot(ctx, userId) {
+  try {
+    await bot.api.sendChatAction(userId, "typing");
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+// Start command handler
+bot.command("start", async (ctx) => {
+  const { id, first_name, last_name } = ctx.from;
+  await initializeTables().catch(console.error);
+  if (ctx.config.isGroupChat) {
+    try {
+      // Try to send DM
+      const msg = ctx.config?.isDeveloper
+        ? "Hi mom!! <3"
+        : returnMsgs(first_name).start;
+
+      await bot.api.sendMessage(id, msg, {
+        reply_markup: mainInlineKeyboard,
+      });
+
+      // Confirm in group
+      await ctx.reply(
+        `${first_name}, I've sent you a private message! Check your DM.`,
+        { reply_to_message_id: ctx.message.message_id }
+      );
+    } catch (error) {
+      // User hasn't started the bot
+      await ctx.reply(
+        `${first_name}, please start a private chat with me first by clicking this link: t.me/${ctx.me.username}`,
+        { reply_to_message_id: ctx.message.message_id }
+      );
+    }
+  } else {
+    // Direct message
+    const msg = ctx.config?.isDeveloper
+      ? "Hi mom!! <3"
+      : returnMsgs(first_name).start;
+
+    await ctx.reply(msg, {
+      reply_markup: mainInlineKeyboard,
+    });
+
+    // Notify developer
+    if (id !== devID) {
+      await bot.api.sendMessage(
+        devID,
+        `New user: ${first_name} (${id}) started the bot`
+      );
+    }
+  }
+});
+
+// Game command handler with DM check
+bot.command("game", async (ctx) => {
+  const { first_name, id } = ctx.from;
+  const groupId = ctx.chat?.id;
+  const groupName = ctx.chat?.title;
+
+  if (!ctx.config.isGroupChat) {
+    return await ctx.reply("This command can only be used in groups!");
+  }
+
+  // Check if user has started the bot
+  const hasStarted = await hasUserStartedBot(ctx, id);
+  if (!hasStarted) {
+    return await ctx.reply(
+      `${first_name}, please start a private chat with me first by clicking this link: t.me/${ctx.me.username}`,
+      { reply_to_message_id: ctx.message.message_id }
+    );
+  }
+
+  const existingGame = await getActiveGame(groupId);
+  if (existingGame) {
+    return await ctx.reply(
+      `There's already an active game in this group!\nGroup identifier: ${existingGame.identifier}\nClue: ${existingGame.clue}`
+    );
+  }
+
+  await checkAndResetGuesses();
+  const identifier = await generateIdentifier(groupName);
+  const rand = Math.floor(Math.random() * availableWords.length);
+  const gameWord = availableWords[rand];
+
+  await createGame(
+    groupId,
+    gameWord.word,
+    gameWord.clue,
+    groupName,
+    identifier
+  );
+
+  // Send instructions via DM
+  try {
+    await bot.api.sendMessage(
+      id,
+      `Hi ${first_name}. Thanks for starting today's guessing game!\n\nTo guess, use:\n/guess [your_guess] ${identifier}\n\nFor example: /guess basecoin ${identifier}`
+    );
+
+    await ctx.reply(
+      `${first_name}, I've sent you game instructions in DM.\n\nHere's the clue for everyone... 👇🏾\n${gameWord.clue}`
+    );
+  } catch (error) {
+    await ctx.reply(
+      `${first_name}, please start a private chat with me first by clicking this link: t.me/${ctx.me.username}`,
+      { reply_to_message_id: ctx.message.message_id }
+    );
+  }
+});
+bot.command("guess", async (ctx) => {
+  if (!ctx.config.isDM) {
+    return await ctx.reply(
+      "Please send your guess in a private message to me!"
+    );
+  }
+
+  const { first_name, id } = ctx.from;
+  const args = ctx.message.text.split(" ");
+
+  if (args.length < 3) {
+    return await ctx.reply(
+      "Please use the format: /guess [your_guess] [group_identifier]\n" +
+        "Example: /guess basecoin cryptogroup"
+    );
+  }
+
+  const guess = args[1].toLowerCase();
+  const identifier = args[2].toLowerCase();
+
+  // Get game by identifier
+  const gameState = await getGameByIdentifier(identifier);
+  if (!gameState) {
+    return await ctx.reply(
+      "Invalid group identifier! Use /activegames to see all active games and their identifiers."
+    );
+  }
+
+  // Verify user is in the group
+  try {
+    const chatMember = await bot.api.getChatMember(gameState.group_id, id);
+    if (!chatMember) {
+      return await ctx.reply(
+        `You must be a member of ${gameState.group_name} to participate in its game!`
+      );
+    }
+  } catch (error) {
+    console.error("Error checking group membership:", error);
+    return await ctx.reply(
+      "Couldn't verify your group membership. Make sure you're in the group!"
+    );
+  }
+
+  const guesses = await getGuesses(id);
+
+  if (guesses > 0) {
+    if (guess === gameState.word.toLowerCase()) {
+      // Send congratulations in DM
+      await ctx.reply(
+        `🎉 Congratulations! You correctly guessed "${gameState.word}"!`
+      );
+
+      // Send announcement to the group
+      try {
+        await bot.api.sendMessage(
+          gameState.group_id,
+          `🎉 ${first_name} has correctly guessed the word: "${gameState.word}"!`
+        );
+        // Delete game from database
+        await deleteGame(gameState.group_id);
+      } catch (error) {
+        console.error("Error sending group message:", error);
+      }
+    } else {
+      await updateGuesses(id, guesses - 1);
+      const remainingGuesses = await getGuesses(id);
+      await ctx.reply(
+        `❌ Wrong guess! You have ${remainingGuesses} guesses left.`
+      );
+    }
+  } else {
+    await ctx.reply(
+      `Sorry ${first_name}, you're out of guesses for today. Try again tomorrow! 😞`
+    );
+  }
+});
+
+bot.command("activegames", async (ctx) => {
+  if (!ctx.config.isDM) {
+    return await ctx.reply("Please check active games in a private message!");
+  }
+
+  const activeGames = await getAllActiveGames();
+
+  if (activeGames.length === 0) {
+    return await ctx.reply("There are no active games at the moment!");
+  }
+
+  let message = "Active Games:\n\n";
+  for (const game of activeGames) {
+    message +=
+      `Group: ${game.group_name}\n` +
+      `Identifier: ${game.identifier}\n` +
+      `Started: ${new Date(game.start_time).toLocaleString()}\n` +
+      `Clue: ${game.clue}\n\n`;
+  }
+
+  message += "\nTo make a guess, use:\n/guess [your_guess] [identifier]";
+  await ctx.reply(message);
+});
+
+bot.command("endgame", async (ctx) => {
+  if (!ctx.config.isGroupChat) return;
+
+  // Check if user is admin
+  const member = await ctx.getChatMember(ctx.from.id);
+  if (!["administrator", "creator"].includes(member.status)) {
+    return await ctx.reply("Only group administrators can end games!");
+  }
+
+  const existingGame = await getActiveGame(ctx.chat.id);
+  if (existingGame) {
+    await deleteGame(ctx.chat.id);
+    await ctx.reply("The current game has been ended by an administrator.");
+  } else {
+    await ctx.reply("There's no active game to end!");
+  }
+});
+// Admin commands
+bot.command("stats", async (ctx) => {
+  if (ctx.from.id !== devID) return;
+
+  const totalUsers = await getUsers();
+
+  await ctx.reply(`Bot Statistics:\nTotal Users: ${totalUsers.length}`);
+});
+// DM Command handler
+bot.command("comedm", async (ctx) => {
+  if (ctx.config.isGroupChat) {
+    try {
+      await bot.api.sendMessage(
+        ctx.from.id,
+        `Hi ${ctx.from.first_name}! 👋 You requested me from the group. How can I help you?`
+      );
+
+      // Confirm in group
+      await ctx.reply(
+        `I've sent you a DM, ${ctx.from.first_name}! Check your private messages.`,
+        { reply_to_message_id: ctx.message.message_id }
+      );
+    } catch (error) {
+      // Handle case where user hasn't started bot
+      await ctx.reply(
+        `${ctx.from.first_name}, please start a chat with me first by clicking this link: t.me/${ctx.me.username}`,
+        { reply_to_message_id: ctx.message.message_id }
+      );
+    }
+  } else {
+    await ctx.reply("We're already in a private chat! How can I help you?");
+  }
+});
+// Message handler with DM redirect
+bot.on("message:text", async (ctx) => {
+  if (!ctx.config.shouldRespond && !ctx.config.isDM) return;
+
+  const { first_name, id } = ctx.from;
+  const messageText = ctx.message.text.toLowerCase();
+
+  // Handle reactions
+  if (messageText.includes("basik") || messageText.includes("base")) {
+    await ctx.react("❤️");
+  }
+
+  if (ctx.config.shouldRespond || ctx.config.isDM) {
+    const editedMsg = ctx.config.isGroupChat
+      ? messageText.replace(`@${ctx.me.username?.toLowerCase()}`, "").trim()
+      : messageText;
+
+    // Only process Gemini responses in group chat
+    if (ctx.config.isGroupChat && !messageText.startsWith("/")) {
+      const response = await getGeminiResponse(id, editedMsg);
+      if (response) {
+        const cleanResponse = response.includes("**")
+          ? response.replace(/\*\*/g, "")
+          : response;
+        await ctx.reply(cleanResponse);
+      }
+      return;
+    }
+
+    await bot.api.sendChatAction(id, "typing");
+    let response;
+    switch (editedmsg) {
+      case "💳 Wallet":
+        text = "/wallet";
+        msg = returnMsgs(first_name).wallet;
+        kb = walletKeyboard;
+        break;
+      case "➕ Installation":
+        text = "/installwallet";
+        msg = returnMsgs(first_name).walletInstall;
+        kb = walletKeyboard;
+        break;
+      case "🔗 Set Up Wallet":
+        text = "/setupwallet";
+        msg = returnMsgs(first_name).walletSetUp;
+        kb = walletKeyboard;
+        break;
+      case "🔐 Wallet Security":
+        text = "/walletsecurity";
+        msg = returnMsgs(first_name).walletSec;
+        kb = walletKeyboard;
+        break;
+      case "🚀 Get Started":
+        text = "/overview";
+        msg = returnMsgs(first_name).overview;
+        kb = keyboard;
+        break;
+      case "🔨 Buildathon":
+        text = "/build";
+        msg = returnMsgs(first_name).build;
+        break;
+      case "🌐 Community":
+        text = "/community";
+        msg = returnMsgs(first_name).community;
+        break;
+      case "🗣️ Feedback":
+        text = "/feedback";
+        msg = returnMsgs(first_name).feedback;
+        break;
+      case "💵 Earn":
+        text = "/earn";
+        msg = returnMsgs(first_name).earn;
+        kb = earnKeyboard;
+        break;
+      case "🏛️ Farcaster":
+        text = "/warpcast";
+        msg = returnMsgs(first_name).warpcast;
+        kb = earnKeyboard;
+        break;
+      case "🕶️ Rounds":
+        text = "/rounds";
+        msg = returnMsgs(first_name).rounds;
+        kb = earnKeyboard;
+        break;
+      case "❓ FAQ":
+        text = "/faq";
+        msg = returnMsgs(first_name).faq;
+        kb = faqKeyboard;
+        break;
+      case "I'm a developer 🧑‍💻, How do i build on Base?🤔":
+        text = "/faq";
+        msg = returnMsgs(first_name).q2;
+        kb = faqKeyboard;
+        break;
+      case "I am a complete newbie, I know nothing😫":
+        text = "/faq";
+        msg = returnMsgs(first_name).q1;
+        kb = faqKeyboard;
+        break;
+      case "What makes Base better than other Ethereum L2s?🤔":
+        text = "/faq";
+        msg = returnMsgs(first_name).q4;
+        kb = faqKeyboard;
+        break;
+      case "Whats the difference between Farcaster and Warpcast?🤷":
+        text = "/faq";
+        msg = returnMsgs(first_name).q3;
+        kb = faqKeyboard;
+        break;
+      case "🖥️ Dapps":
+        text = "/dapps";
+        msg = returnMsgs(first_name).dapp;
+        break;
+      case "🚿 Faucets":
+        text = "/faucet";
+        msg = returnMsgs(first_name).faucet;
+        break;
+      case "🆘 Help":
+        text = "/help";
+        msg = returnMsgs(first_name).help;
+        break;
+      case "/help":
+        msg = returnMsgs(first_name).help;
+        break;
+      case "📒 Rounds Info":
+        text = "/roundsInfo";
+        msg = returnMsgs(first_name).info;
+        kb = infoKeyboard;
+        break;
+      case "🔙 Back":
+        text = "/home";
+        msg = "...";
+        kb = keyboard;
+        break;
+      case "➕ More":
+        text = "/more";
+        msg = "...";
+        kb = extraKeyboard;
+        break;
+      default:
+        response = await getGeminiResponse(id, editedmsg);
+        break;
+    }
+    response = response.includes("**")
+      ? response.replace(/\*\*/g, "")
+      : response;
+    if (response) {
+      await ctx.reply(response);
+    }
+  }
+});
+
+// Initialize tables
+
+export default webhookCallback(bot, "std/http");

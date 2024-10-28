@@ -15,8 +15,3 @@ export function timeLeft(later) {
   time = differenceInHours(later, today) % 24 < 0 ? "Rounds have Ended" : time;
   return time;
 }
-// export async function addLinks(desc, link) {
-//   await desc
-//     .split(" ")
-//     .map((x) => (x = x.startsWith("/") ? `<a href=${link}>${x}</a>` : x));
-// }

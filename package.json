@@ -2,9 +2,27 @@
   "name": "adonis",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1",
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "OPTIONS"
+      ],
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    }
+  ],
   "author": "",
   "license": "ISC",
   "description": "",
@@ -13,9 +31,15 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.19.0",
+    "@grammyjs/hydrate": "^1.4.1",
+    "@grammyjs/ratelimiter": "^1.2.0",
+    "@grammyjs/runner": "^2.0.3",
+    "@grammyjs/transformer-throttler": "^1.2.1",
+    "@vercel/postgres": "^0.10.0",
     "date-fns": "^4.1.0",
     "fs": "^0.0.1-security",
     "grammy": "^1.30.0",
+    "mongodb": "^6.10.0",
     "telegramify-markdown": "^1.2.2"
   }
 }
