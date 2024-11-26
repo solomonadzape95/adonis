@@ -52,11 +52,11 @@ export async function resetWords() {
     console.error("Error resetting words:", err);
   }
 }
-export async function getUsers() {
+export async function getUsers(id) {
   try {
     const { rows } = await sql`SELECT * FROM users`;
     // console.log("Users:", rows);
-    return rows;
+    return rows.find(u => u.id === id);
   } catch (error) {
     console.error("Error fetching users:", error);
   }

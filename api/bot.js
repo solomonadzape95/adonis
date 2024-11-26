@@ -50,29 +50,33 @@ bot.use(async (ctx, next) => {
     await initializeTables();
 
     const existingUser = await getUsers(id);
-    if (!existingUser) {
+    console.log(existingUser);
+    if (!existingUser || existingUser.length === 0) {
       await addUser({ id, first_name, last_name });
     }
+    if (ctx.message.new_chat_members || ctx.message.left_chat_member) {
+      return;
+    } else {
+      const isGroupChat =
+        ctx.chat?.type === "group" || ctx.chat?.type === "supergroup";
+      const isBotMentioned =
+        ctx.message && ctx.message?.text.includes(`@${ctx.me.username}`);
+      const isDM = ctx.chat?.type === "private";
 
-    const isGroupChat =
-      ctx.chat?.type === "group" || ctx.chat?.type === "supergroup";
-    const isBotMentioned =
-      ctx.message && ctx.message?.text.includes(`@${ctx.me.username}`);
-    const isDM = ctx.chat?.type === "private";
+      ctx.config = {
+        isGroupChat,
+        isBotMentioned,
+        isDM,
+        shouldRespond:
+          isDM ||
+          (isGroupChat && isBotMentioned) ||
+          (ctx.message?.reply_to_message &&
+            ctx.message.reply_to_message.from.id === ctx.me.id),
+        isDeveloper: id === devID,
+      };
 
-    ctx.config = {
-      isGroupChat,
-      isBotMentioned,
-      isDM,
-      shouldRespond:
-        isDM ||
-        (isGroupChat && isBotMentioned) ||
-        (ctx.message?.reply_to_message &&
-          ctx.message.reply_to_message.from.id === ctx.me.id),
-      isDeveloper: id === devID,
-    };
-
-    await next();
+      await next();
+    }
   } catch (error) {
     console.error("Middleware error:", error);
     await ctx
@@ -246,7 +250,7 @@ bot.command("guess", async (ctx) => {
         );
         await bot.api.sendMessage(
           gameState.group_id,
-          `@zappas_jnr tip $50 brens to @${ctx.from.username}`
+          `@brenisbot tip 20 $bren @${ctx.from.username}`
         );
         await updateUser(id);
         // Delete game from database
@@ -409,23 +413,30 @@ bot.command("learn", async (ctx) => {
   });
 });
 bot.command("review", async (ctx) => {
-  const msg = ctx.match;
-  if (msg === "") {
-    await ctx.reply("You know you didn't actually send a message right?🤔", {
+  if (ctx.config.isGroupChat) {
+    await ctx.reply("Try that again in a private message with me", {
       reply_to_message_id: ctx.message.message_id,
     });
-    return;
-  }
-  const { first_name } = ctx.from;
-  await bot.api.sendMessage(
-    devID,
-    `${first_name} sent a review :
+    await bot.api.sendMessage(ctx.from.id, "You can review me here");
+  } else {
+    const msg = ctx.match;
+    if (msg === "") {
+      await ctx.reply("You know you didn't actually send a message right?🤔", {
+        reply_to_message_id: ctx.message.message_id,
+      });
+      return;
+    }
+    const { first_name, id } = ctx.from;
+    await bot.api.sendMessage(
+      devID,
+      `${first_name} sent a review :
 "${msg}"`
-  );
-  await ctx.reply("Review Sent😁", {
-    reply_markup: keyboard,
-    reply_to_message_id: ctx.message.message_id,
-  });
+    );
+    await bot.api.sendMessage(id, "Review Sent😁", {
+      reply_markup: keyboard,
+      reply_to_message_id: ctx.message.message_id,
+    });
+  }
 });
 bot.command("read", async (ctx) => {
   if (!ctx.config?.isGroupChat) return;
@@ -572,6 +583,7 @@ bot.on("message:text", async (ctx) => {
 
         // Removed inline keyboard response parts
         if (ctx.config.isGroupChat) {
+          if (editedMsg === "") return;
           await ctx.api.sendMessage(
             id,
             `${response}`,
